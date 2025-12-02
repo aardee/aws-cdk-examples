@@ -6,7 +6,15 @@
 
 Creates an [AWS Lambda](https://aws.amazon.com/lambda/) function writing to [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) and invoked by [Amazon API Gateway](https://aws.amazon.com/api-gateway/) REST API. 
 
+This implementation includes **AWS X-Ray tracing** for end-to-end request monitoring and **CloudWatch alarms** for proactive error detection, following AWS Well-Architected Framework best practices.
+
 ![architecture](docs/architecture.png)
+
+## Features
+
+- **End-to-End Tracing**: AWS X-Ray enabled on API Gateway, Lambda, and DynamoDB operations
+- **Proactive Monitoring**: CloudWatch alarms for Lambda errors and throttling
+- **VPC Isolation**: Lambda functions run in private subnets with VPC endpoints
 
 ## Setup
 
@@ -70,6 +78,8 @@ $ cdk deploy --profile test
 ```
 
 ## After Deploy
+
+### Testing the API
 Navigate to AWS API Gateway console and test the API with below sample data 
 ```json
 {
@@ -84,6 +94,16 @@ You should get below response
 ```json
 {"message": "Successfully inserted data!"}
 ```
+
+### Viewing X-Ray Traces
+1. Navigate to AWS X-Ray console
+2. View the Service Map to see API Gateway → Lambda → DynamoDB flow
+3. Click on traces to analyze request latency and identify bottlenecks
+
+### Monitoring with CloudWatch
+1. Navigate to CloudWatch Alarms console
+2. View configured alarms for Lambda errors and throttling
+3. Set up SNS notifications for alarm triggers (optional)
 
 ## Cleanup 
 Run below script to delete AWS resources created by this sample stack.
